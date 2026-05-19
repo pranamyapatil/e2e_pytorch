@@ -165,12 +165,14 @@ class BaseTrainer:
         logger.info(f"Checkpoint saved → {path}")
 
     def _make_loader(self, dataset: Dataset, batch_size: int, shuffle: bool) -> DataLoader:
+        collate_fn = getattr(dataset, "collate_fn", None)
         return DataLoader(
             dataset,
             batch_size=batch_size,
             shuffle=shuffle,
             num_workers=self.args.num_workers,
             pin_memory=(self.device.type == "cuda"),
+            collate_fn=collate_fn,
         )
 
     def _to_device(self, batch):
