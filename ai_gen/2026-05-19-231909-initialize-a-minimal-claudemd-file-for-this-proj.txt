@@ -1,0 +1,1417 @@
+╭─── Claude Code v2.1.143 ─────────────────────────────────────────────────────╮
+│                                                    │ Tips for getting        │
+│                    Welcome back!                   │ started                 │
+│                                                    │ ✔ Run /init to create … │
+│                       ▐▛███▜▌                      │ ─────────────────────── │
+│                      ▝▜█████▛▘                     │ What's new              │
+│                        ▘▘ ▝▝                       │ Added plugin dependenc… │
+│    Sonnet 4.6 · Claude Pro ·                       │ Added projected contex… │
+│    pranamyapatilsocial@gmail.com's Organization    │ Added `worktree.bgIsol… │
+│            D:\IISc\gitrepos\e2e_pytorch            │ /release-notes for more │
+╰──────────────────────────────────────────────────────────────────────────────╯
+
+❯ /powerup 
+  ⎿  Power-ups closed
+
+❯ /status 
+  ⎿  Settings dialog dismissed
+
+❯ initialize a minimal claude.md file for this project. This project is         
+  supposed to be similar to huggingface transformers to train any deep neural   
+  network based models easily. Mantain all the abstraction and configurable     
+  changes for all classes etc                                                   
+
+● Let me explore the project structure first.
+
+● Explore(Explore project structure)
+  ⎿  Done (9 tool uses · 24.6k tokens · 51s)
+  (ctrl+o to expand)
+
+● The repo is an empty skeleton — just a README. Let me invoke the /init skill
+  to create a CLAUDE.md capturing the intended architecture and design
+  principles.
+
+● Skill(init)
+  ⎿  Successfully loaded skill
+
+  Read 1 file (ctrl+o to expand)
+
+● The repo is a blank slate. I'll create a minimal, intent-driven CLAUDE.md
+  based on what you've described — a HuggingFace-style framework with deep
+  abstraction and configurability — without fabricating specifics that don't
+  exist yet.
+
+● Write(CLAUDE.md)
+  ⎿  Wrote 60 lines to CLAUDE.md
+      2 # CLAUDE.md
+      3 This file provides guidance to Claude Code (claude.ai/code) when 
+      4 working with code in this repository.
+      5 ## Project Overview
+      7 `e2e_pytorch` is a PyTorch-based end-to-end deep learning framewo
+        rk designed to make training any deep neural network model easy a
+        e goal is to provide clean abstractions for models, configs, trai
+        ners, and data pipelines that are fully configurable via dataclas
+      8 ses or config files.
+      9 ## Architecture Philosophy
+     … +73 lines (ctrl+o to expand)
+
+● CLAUDE.md is created. It covers:
+
+  - Project intent — HuggingFace-style framework in PyTorch
+  - Architecture philosophy — Config → Base class → registered subclass pattern
+  throughout
+  - Key abstractions table — BaseConfig, BaseModel, BaseTrainer, BaseDataset,
+  Registry
+  - Design rules — config-first, registry pattern, no hidden defaults,
+  separation of concerns
+  - Dev commands — pytest, ruff, mypy stubs ready to fill in once pyproject.toml
+   lands
+
+  Update the commands section once you add your package setup file.
+
+✻ Brewed for 1m 2s
+
+❯ commit this                                                                   
+
+● Bash(git status && git diff --cached && git log --oneline -5)
+  ⎿  On branch master
+     Your branch is up to date with 'origin/master'.
+     … +7 lines (ctrl+o to expand)
+
+● Bash(git add CLAUDE.md && git commit -m "$(cat <<'EOF'
+      Add CLAUDE.md with project architecture and development guidance…)
+  ⎿  Interrupted · What should Claude do instead?
+
+※ recap: Created CLAUDE.md for e2e_pytorch, a HuggingFace-style PyTorch training framework, documenting the config-first and registry-based architecture philosophy. Next step is adding actual source code and a pyproject.toml. (disable recaps in /config)
+
+❯ can you also create minimal spec.md file.. I will fill in all the necesarry   
+  details                                                                       
+
+● Write(spec.md)
+  ⎿  Wrote 22 lines to spec.md
+      1 # spec.md — e2e_pytorch Project Specification
+      2 
+      3 ## Goal
+      4 
+      5 
+      6 ## Target Users
+      7 
+      8 
+      9 ## Core Features
+     … +12 lines (ctrl+o to expand)
+
+● spec.md is created with minimal section headers for you to fill in. Now shall
+  I commit both CLAUDE.md and spec.md together?
+
+✻ Baked for 5s
+
+❯ with the help of spec and claude.md file can you suggest basic code and       
+  directory structure.. I will check and give my suggestions                    
+
+● Based on the spec, here's a proposed structure:
+
+  e2e_pytorch/
+  │
+  ├── common/                      # Shared building blocks
+  │   ├── __init__.py
+  │   ├── layers/                  # Reusable nn.Module primitives
+  │   │   ├── attention.py         # MultiHeadAttention, SelfAttention,
+  CrossAttention
+  │   │   ├── feedforward.py       # FFN, GLU variants
+  │   │   ├── normalization.py     # LayerNorm, RMSNorm, BatchNorm
+  │   │   ├── positional.py        # Sinusoidal, RoPE, ALiBi embeddings
+  │   │   └── dropout.py           # DropPath, StochasticDepth, etc.
+  │   ├── config.py                # BaseConfig dataclass
+  │   ├── model.py                 # BaseModel (wraps nn.Module)
+  │   └── registry.py              # Registry: maps name → class
+  │
+  ├── audio/                       # Speech / audio domain
+  │   ├── __init__.py
+  │   ├── data/
+  │   │   ├── dataset.py           # AudioDataset (BaseDataset subclass)
+  │   │   ├── collator.py          # AudioCollator
+  │   │   └── processor.py        # Feature extraction (MFCC, mel-spectrogram)
+  │   ├── models/
+  │   │   ├── conformer.py
+  │   │   └── wav2vec.py
+  │   └── metrics.py               # WER, CER
+  │
+  ├── text/                        # NLP domain
+  │   ├── __init__.py
+  │   ├── data/
+  │   │   ├── dataset.py           # TextDataset
+  │   │   ├── collator.py
+  │   │   └── tokenizer.py
+  │   ├── models/
+  │   │   ├── transformer.py
+  │   │   └── bert.py
+  │   └── metrics.py               # BLEU, ROUGE, accuracy
+  │
+  ├── trainer/                     # Universal training infra
+  │   ├── __init__.py
+  │   ├── trainer.py               # BaseTrainer: loop, grad accum,
+  checkpointing
+  │   ├── optimizer.py             # Optimizer factory (from config)
+  │   └── scheduler.py             # LR scheduler factory
+  │
+  ├── train.py                     # Entry point: load config → build model+data
+   → train
+  ├── evaluate.py                  # Entry point: load checkpoint → run eval
+  ├── configs/                     # Example YAML/JSON configs per experiment
+  │   └── text/
+  │       └── transformer_base.yaml
+  │
+  └── tests/
+      ├── test_layers.py
+      ├── test_trainer.py
+      └── audio/
+          └── test_dataset.py
+
+  Key design points baked in:
+
+  - common/layers/ is the shared primitive pool — every domain model imports
+  from here, no duplication
+  - common/registry.py lets you do Registry.build("conformer", config) from a
+  config file
+  - common/config.py BaseConfig is the root — every domain config subclasses it
+  - Domain dirs (audio/, text/) are self-contained but depend only on common/
+  - train.py / evaluate.py are domain-agnostic entry points — they discover the
+  right classes via the registry
+
+  Does this structure match your vision, or do you want to adjust anything
+  (e.g., add a vision/ domain, flatten the data/ subdirs, or change how configs
+  are handled)?
+
+✻ Cogitated for 15s
+
+❯ can you also create minimal spec.md file.. I will fill in all the necesarry   
+  details                                                                       
+● spec.md already exists — you filled it in earlier with the project details.
+  Would you like me to expand it based on the directory structure we just
+  discussed, or leave it as-is for you to continue editing?
+
+✻ Churned for 3s
+
+❯ expand based on above directory structure                                     
+
+  Read 1 file (ctrl+o to expand)
+
+● Write(spec.md)
+  ⎿  Added 85 lines, removed 8 lines
+        1  # spec.md — e2e_pytorch Project Specification
+        2 -This is basic e2e pytorch implementation of deep learning proj
+          -ects from speech, text etc domains. All the implementation sho
+          -uld be in pure pytorch and the classes etc should have modular
+          - structure                                                    
+        2 +                                                              
+        3 +This is a pure PyTorch end-to-end implementation of deep learn
+          +ing projects across domains (speech, text, etc.). All implemen
+          +tation is in pure PyTorch with a modular, reusable class struc
+          +ture.                                                         
+        4 +                                                              
+        5  ## Goal
+        4 -There will multiple directories for audio, text etc domain. In
+          - each directory there should be classes to handle dataloading,
+          - processing, datasets, model classes, evaluation metric relate
+          -d classes.                                                    
+        5 -For the complete project there should be universal train, test
+          -, eval related python scripts / files.                        
+        6  
+        7 +Build a clean, educational deep learning framework where:     
+        8 +- Each domain (audio, text, ...) has its own self-contained di
+          +rectory with data loading, processing, datasets, model classes
+          +, and evaluation metrics.                                     
+        9 +- A universal set of training, evaluation, and inference scrip
+          +ts works across all domains via a shared config and registry s
+          +ystem.                                                        
+       10 +- Learners can trace the full forward pass of complex architec
+          +tures without framework magic hiding the details.             
+       11  
+       12  ## Target Users
+        9 -those who want to learn and understand complex architectures f
+          -rom basics                                                    
+       13  
+       11 -## Core Features                                              
+       12 -The common classes / layers like Linear, dropout, attention, e
+          -tc should be reused                                           
+       14 +Those who want to learn and understand complex architectures (
+          +Transformers, Conformers, etc.) from first principles — withou
+          +t relying on high-level abstractions that hide what's happenin
+          +g.                                                            
+       15  
+       14 -## Out of Scope                                               
+       16 +## Directory Structure                                        
+       17  
+       18 +```                                                           
+       19 +e2e_pytorch/                                                  
+       20 +├── common/                      # Shared building blocks     
+       21 +│   ├── layers/                  # Reusable nn.Module primitiv
+          +es                                                            
+       22 +│   │   ├── attention.py         # MultiHeadAttention, SelfAtt
+          +ention, CrossAttention                                        
+       23 +│   │   ├── feedforward.py       # FFN, GLU variants          
+       24 +│   │   ├── normalization.py     # LayerNorm, RMSNorm, BatchNo
+          +rm                                                            
+       25 +│   │   ├── positional.py        # Sinusoidal, RoPE, ALiBi emb
+          +eddings                                                       
+       26 +│   │   └── dropout.py           # DropPath, StochasticDepth  
+       27 +│   ├── config.py                # BaseConfig dataclass       
+       28 +│   ├── model.py                 # BaseModel (wraps nn.Module)
+       29 +│   └── registry.py              # Registry: maps name → class
+       30 +│                                                             
+       31 +├── audio/                       # Speech / audio domain      
+       32 +│   ├── data/                                                 
+       33 +│   │   ├── dataset.py           # AudioDataset               
+       34 +│   │   ├── collator.py          # AudioCollator              
+       35 +│   │   └── processor.py         # Feature extraction (MFCC, m
+          +el-spectrogram)                                               
+       36 +│   ├── models/                                               
+       37 +│   │   ├── conformer.py                                      
+       38 +│   │   └── wav2vec.py                                        
+       39 +│   └── metrics.py               # WER, CER                   
+       40 +│                                                             
+       41 +├── text/                        # NLP domain                 
+       42 +│   ├── data/                                                 
+       43 +│   │   ├── dataset.py           # TextDataset                
+       44 +│   │   ├── collator.py                                       
+       45 +│   │   └── tokenizer.py                                      
+       46 +│   ├── models/                                               
+       47 +│   │   ├── transformer.py                                    
+       48 +│   │   └── bert.py                                           
+       49 +│   └── metrics.py               # BLEU, ROUGE, accuracy      
+       50 +│                                                             
+       51 +├── trainer/                     # Universal training infrastr
+          +ucture                                                        
+       52 +│   ├── trainer.py               # BaseTrainer: loop, grad acc
+          +um, checkpointing                                             
+       53 +│   ├── optimizer.py             # Optimizer factory          
+       54 +│   └── scheduler.py             # LR scheduler factory       
+       55 +│                                                             
+       56 +├── train.py                     # Entry point: config → model
+          + + data → train                                               
+       57 +├── evaluate.py                  # Entry point: checkpoint → e
+          +val                                                           
+       58 +├── configs/                     # YAML/JSON configs per exper
+          +iment                                                         
+       59 +└── tests/                                                    
+       60 +```                                                           
+       61  
+       62 +## Core Features                                              
+       63 +                                                              
+       64 +- **`common/layers/`** — shared primitive pool (Attention, FFN
+          +, Norm, Positional encodings). Every domain model imports from
+          + here; no duplication across domains.                         
+       65 +- **`BaseConfig`** — serializable dataclass (supports `from_di
+          +ct`, `to_dict`, `from_json`). All hyperparameters live here, n
+          +ot scattered in `__init__` signatures.                        
+       66 +- **`BaseModel`** — thin `nn.Module` wrapper tied to a config;
+          + exposes `save_checkpoint` / `load_checkpoint`.               
+       67 +- **`Registry`** — maps string names to classes so any compone
+          +nt can be instantiated from a config file (`Registry.build("co
+          +nformer", config)`).                                          
+       68 +- **`BaseTrainer`** — domain-agnostic training loop with gradi
+          +ent accumulation, logging, and checkpointing.                 
+       69 +- **Domain dirs** (`audio/`, `text/`) are self-contained and d
+          +epend only on `common/`.                                      
+       70 +- **`train.py` / `evaluate.py`** are domain-agnostic entry poi
+          +nts — they resolve the right classes via the registry and a co
+          +nfig file.                                                    
+       71 +                                                              
+       72  ## Key Design Decisions
+       18 -modular, reusable structure using all concepts of python      
+       73  
+       74 +- **Config-first**: every tuneable component accepts a config 
+          +object, not raw kwargs.                                       
+       75 +- **Registry pattern**: concrete subclasses register themselve
+          +s so the framework can build them by name from a config.      
+       76 +- **No hidden defaults**: all defaults live in the config data
+          +class, never in method signatures.                            
+       77 +- **Pure PyTorch**: no Lightning, no HuggingFace Trainer — the
+          + full training loop is visible and readable.                  
+       78 +- **Separation of concerns**: model, trainer, data pipeline, a
+          +nd evaluation are independent and swappable.                  
+       79 +- Python concepts in use: dataclasses, abstract base classes, 
+          +decorators (for registry), `__init_subclass__`, type hints thr
+          +oughout.                                                      
+       80 +                                                              
+       81 +## Out of Scope                                               
+       82 +                                                              
+       83 +- Multi-modal models (cross-domain fusion)                    
+       84 +- Distributed / multi-GPU training (can be added later)       
+       85 +- Deployment / serving infrastructure                         
+       86 +                                                              
+       87  ## Milestones / Phases
+       88  
+       89 +1. `common/` — BaseConfig, BaseModel, Registry, all shared lay
+          +ers                                                           
+       90 +2. `trainer/` — BaseTrainer, optimizer/scheduler factories    
+       91 +3. `text/` domain — Transformer, dataset, metrics             
+       92 +4. `audio/` domain — Conformer, feature extraction, WER metric
+       93 +5. End-to-end `train.py` / `evaluate.py` wiring               
+       94 +6. Example configs and a working training run per domain      
+       95  
+       96  ## Open Questions
+       97  
+       98 +- YAML vs Python dataclass configs as the primary interface?  
+       99 +- Should `configs/` live inside each domain dir or stay top-le
+          +vel?                                                          
+      100 +- Which audio datasets to support first (LibriSpeech, LJSpeech
+          +)?                                                            
+      101 +- Which text tasks to support first (language modeling, classi
+          +fication, seq2seq)?                                           
+
+● spec.md is expanded. Key additions:
+
+  - Directory structure with the full tree and annotations
+  - Core features section describing each abstraction's role
+  - Design decisions — config-first, registry, pure PyTorch, separation of
+  concerns
+  - Milestones — 6 phases from common/ layers up to end-to-end wiring
+  - Open questions — left for you to resolve (config format, dataset choices,
+  etc.)
+
+  Fill in the Open Questions section as you make those decisions — it'll help
+  future sessions stay aligned.
+
+✻ Churned for 26s
+
+❯ can you write the code for train, evaluate and trainer using the above        
+  mentioned specs                                                               
+
+● Let me plan all files before writing, then write them all.
+
+  Files needed:
+  - common/__init__.py, common/config.py, common/model.py, common/registry.py
+  - trainer/__init__.py, trainer/config.py, trainer/optimizer.py,
+  trainer/scheduler.py, trainer/trainer.py
+  - train.py, evaluate.py
+
+● Write(common\__init__.py)
+  ⎿  Wrote 3 lines to common\__init__.py
+      1 from .config import BaseConfig
+      2 from .model import BaseModel
+      3 from .registry import Registry
+
+● Write(common\config.py)
+  ⎿  Wrote 33 lines to common\config.py
+       2 from __future__ import annotations
+       3 import json
+       4 from dataclasses import asdict, dataclass, fields
+       5 from pathlib import Path
+       6 
+       7 
+       8 @dataclass
+       9 class BaseConfig:
+      10     """Root config for all components. Subclass and add fields a
+         s frozen dataclass kwargs."""
+     … +25 lines (ctrl+o to expand)
+
+● Write(common\registry.py)
+  ⎿  Wrote 43 lines to common\registry.py
+       2 from __future__ import annotations
+       3 
+       4 class Registry:
+       5     """
+       6     Maps (namespace, name) → class for config-driven instantiati
+         on.
+       7 
+       8     Usage:
+       9         @Registry.register("model", "transformer")
+      10         class TransformerModel(BaseModel): ...
+     … +33 lines (ctrl+o to expand)
+
+● Write(common\model.py)
+  ⎿  Wrote 48 lines to common\model.py
+      1 from __future__ import annotations
+      2 
+      3 from abc import ABC, abstractmethod
+      4 from pathlib import Path
+      5 
+      6 import torch
+      7 import torch.nn as nn
+      8 
+      9 from .config import BaseConfig
+     … +46 lines (ctrl+o to expand)
+
+● Write(trainer\__init__.py)
+  ⎿  Wrote 2 lines to trainer\__init__.py
+      1 from .config import TrainingArguments
+      2 from .trainer import BaseTrainer
+
+● Write(trainer\config.py)
+  ⎿  Wrote 35 lines to trainer\config.py
+       1 from __future__ import annotations
+       2 
+       3 from dataclasses import dataclass
+       4 
+       5 from common.config import BaseConfig
+       6 
+       7 
+       8 @dataclass
+       9 class TrainingArguments(BaseConfig):
+      10     output_dir: str = "outputs"
+     … +25 lines (ctrl+o to expand)
+
+● Write(trainer\optimizer.py)
+  ⎿  Wrote 32 lines to trainer\optimizer.py
+      1 from __future__ import annotations
+      2 
+      3 import torch
+      4 from torch.optim import Optimizer
+      5 
+      6 from .config import TrainingArguments
+      7 
+      8 # Parameters containing these substrings are excluded from weight
+         decay.
+      9 _NO_DECAY = {"bias", "LayerNorm.weight", "layer_norm.weight"}
+     … +30 lines (ctrl+o to expand)
+
+● Write(trainer\scheduler.py)
+  ⎿  Wrote 38 lines to trainer\scheduler.py
+      1 from __future__ import annotations
+      2 
+      3 import math
+      4 
+      5 import torch
+      6 from torch.optim import Optimizer
+      7 from torch.optim.lr_scheduler import LambdaLR
+      8 
+      9 from .config import TrainingArguments
+     … +32 lines (ctrl+o to expand)
+
+● Write(trainer\trainer.py)
+  ⎿  Wrote 206 lines to trainer\trainer.py
+       1 from __future__ import annotations
+       2 
+       3 import logging
+       4 import random
+       5 from pathlib import Path
+       6 
+       7 import numpy as np
+       8 import torch
+       9 import torch.nn as nn
+      10 from torch.utils.data import DataLoader, Dataset
+     … +226 lines (ctrl+o to expand)
+
+● Write(train.py)
+  ⎿  Wrote 89 lines to train.py
+       2 Entry point for training.
+       3 
+       4 Usage:
+       5     python train.py --config configs/text/transformer_base.json
+       6     python train.py --config configs/audio/conformer.json --resu
+       7 me outputs/checkpoint-epoch-0005
+       8 Config file schema (JSON):
+       9     {
+      10         "model_type":    "transformer",        # registered name
+          in Registry("model")
+     … +93 lines (ctrl+o to expand)
+
+● Write(evaluate.py)
+  ⎿  Wrote 88 lines to evaluate.py
+      2 Entry point for evaluation.
+      3 
+      4 Usage:
+      5     # Evaluate the latest checkpoint using the experiment config 
+        saved during training:
+      6     python evaluate.py --checkpoint outputs/checkpoint-epoch-0010
+      7 
+      8     # Evaluate on a specific split with a custom config:
+      9     python evaluate.py --checkpoint outputs/checkpoint-epoch-0010
+         --config configs/text/transformer_base.json --split test
+     … +91 lines (ctrl+o to expand)
+
+● All 11 files written. Here's a summary of what was built and how the pieces
+  connect:
+
+  ---
+  What was written
+
+  ┌──────────────────────┬───────────────────────────────────────────────────┐
+  │         File         │                       Role                        │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ common/config.py     │ BaseConfig — serializable dataclass with          │
+  │                      │ from_dict/to_dict/from_json/to_json               │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ common/model.py      │ BaseModel — abstract nn.Module tied to a config;  │
+  │                      │ checkpoint save/load                              │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ common/registry.py   │ Registry — maps (namespace, name) → class for     │
+  │                      │ config-driven instantiation                       │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ trainer/config.py    │ TrainingArguments — all training hyperparameters  │
+  │                      │ in one dataclass                                  │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ trainer/optimizer.py │ get_optimizer — AdamW/Adam/SGD with proper        │
+  │                      │ weight-decay param groups                         │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ trainer/scheduler.py │ get_scheduler — cosine/linear/constant with       │
+  │                      │ warmup                                            │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ trainer/trainer.py   │ BaseTrainer — full training loop (grad accum,     │
+  │                      │ fp16, clip, checkpointing, eval hook)             │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ train.py             │ CLI entry point — loads config, builds model+data │
+  │                      │  via registry, runs training                      │
+  ├──────────────────────┼───────────────────────────────────────────────────┤
+  │ evaluate.py          │ CLI entry point — loads checkpoint, runs          │
+  │                      │ trainer.evaluate(), prints metrics                │
+  └──────────────────────┴───────────────────────────────────────────────────┘
+
+  ---
+  Key wiring pattern
+
+  Register a model once:
+  @Registry.register("model", "transformer")
+  class TransformerModel(BaseModel):
+      config_class = TransformerConfig
+      def forward(self, batch): ...  # must return {"loss": ..., ...}
+
+  Run training:
+  python train.py --config configs/text/transformer_base.json
+
+  Extend eval metrics — override compute_metrics() in a domain-specific trainer
+  subclass:
+  class AudioTrainer(BaseTrainer):
+      def compute_metrics(self, outputs): return {"wer": compute_wer(...)}
+
+✻ Baked for 3m 2s
+
+❯ can you write details about key wiring patterns to readme.md file             
+
+  Read 1 file (ctrl+o to expand)
+● Write(README.md)
+  ⎿  Added 181 lines, removed 1 line
+        1  # e2e_pytorch
+        2 -e2e_pytorch                                                   
+        2 +                                                              
+        3 +A pure PyTorch end-to-end deep learning framework for training
+          + models across domains (speech, text, and more). Built for lea
+          +rners who want to understand complex architectures from first 
+          +principles — no framework magic hiding the details.           
+        4 +                                                              
+        5 +---                                                           
+        6 +                                                              
+        7 +## Installation                                               
+        8 +                                                              
+        9 +```bash                                                       
+       10 +pip install -e ".[dev]"                                       
+       11 +```                                                           
+       12 +                                                              
+       13 +---                                                           
+       14 +                                                              
+       15 +## Key Wiring Patterns                                        
+       16 +                                                              
+       17 +### 1. Config — every component starts with a typed dataclass 
+       18 +                                                              
+       19 +All hyperparameters live in a `BaseConfig` subclass, never sca
+          +ttered in `__init__` signatures.                              
+       20 +                                                              
+       21 +```python                                                     
+       22 +from dataclasses import dataclass                             
+       23 +from common.config import BaseConfig                          
+       24 +                                                              
+       25 +@dataclass                                                    
+       26 +class TransformerConfig(BaseConfig):                          
+       27 +    vocab_size: int = 32000                                   
+       28 +    d_model: int = 512                                        
+       29 +    num_heads: int = 8                                        
+       30 +    num_layers: int = 6                                       
+       31 +    dropout: float = 0.1                                      
+       32 +```                                                           
+       33 +                                                              
+       34 +Configs are serializable out of the box:                      
+       35 +                                                              
+       36 +```python                                                     
+       37 +cfg = TransformerConfig(d_model=256)                          
+       38 +cfg.to_json("configs/text/transformer_small.json")            
+       39 +                                                              
+       40 +cfg2 = TransformerConfig.from_json("configs/text/transformer_s
+          +mall.json")                                                   
+       41 +```                                                           
+       42 +                                                              
+       43 +---                                                           
+       44 +                                                              
+       45 +### 2. Registry — build any component by name from a config   
+       46 +                                                              
+       47 +Register a class once with a decorator. After that it can be i
+          +nstantiated by string name — no `if/elif` chains needed when a
+          +dding new models or datasets.                                 
+       48 +                                                              
+       49 +```python                                                     
+       50 +from common.registry import Registry                          
+       51 +from common.model import BaseModel                            
+       52 +                                                              
+       53 +@Registry.register("model", "transformer")                    
+       54 +class TransformerModel(BaseModel):                            
+       55 +    config_class = TransformerConfig   # links the config clas
+          +s to this model                                               
+       56 +                                                              
+       57 +    def __init__(self, config: TransformerConfig):            
+       58 +        super().__init__(config)                              
+       59 +        # build layers using config fields ...                
+       60 +                                                              
+       61 +    def forward(self, batch: dict) -> dict:                   
+       62 +        # batch is a plain dict (input_ids, attention_mask, la
+          +bels, ...)                                                    
+       63 +        # must return a dict with at least {"loss": tensor}   
+       64 +        ...                                                   
+       65 +        return {"loss": loss, "logits": logits}               
+       66 +```                                                           
+       67 +                                                              
+       68 +Look up and instantiate from a string:                        
+       69 +                                                              
+       70 +```python                                                     
+       71 +model_cls = Registry.get("model", "transformer")              
+       72 +model = model_cls(config)                                     
+       73 +                                                              
+       74 +# or in one step:                                             
+       75 +model = Registry.build("model", "transformer", config)        
+       76 +```                                                           
+       77 +                                                              
+       78 +---                                                           
+       79 +                                                              
+       80 +### 3. Dataset — same registration pattern                    
+       81 +                                                              
+       82 +```python                                                     
+       83 +from torch.utils.data import Dataset                          
+       84 +                                                              
+       85 +@Registry.register("dataset", "text_lm")                      
+       86 +class TextLMDataset(Dataset):                                 
+       87 +    def __init__(self, split: str, data_path: str, max_length:
+          + int = 512):                                                  
+       88 +        ...                                                   
+       89 +                                                              
+       90 +    def __len__(self): ...                                    
+       91 +    def __getitem__(self, idx) -> dict: ...  # returns a dict 
+          +batch                                                         
+       92 +```                                                           
+       93 +                                                              
+       94 +---                                                           
+       95 +                                                              
+       96 +### 4. Experiment config — one JSON ties everything together  
+       97 +                                                              
+       98 +```json                                                       
+       99 +{                                                             
+      100 +    "model_type":    "transformer",                           
+      101 +    "dataset_type":  "text_lm",                               
+      102 +    "do_eval":       true,                                    
+      103 +    "model_config": {                                         
+      104 +        "vocab_size": 32000,                                  
+      105 +        "d_model": 512,                                       
+      106 +        "num_heads": 8,                                       
+      107 +        "num_layers": 6                                       
+      108 +    },                                                        
+      109 +    "dataset_config": {                                       
+      110 +        "data_path": "data/wikitext",                         
+      111 +        "max_length": 512                                     
+      112 +    },                                                        
+      113 +    "training_args": {                                        
+      114 +        "output_dir":    "outputs/transformer-base",          
+      115 +        "num_epochs":    20,                                  
+      116 +        "batch_size":    64,                                  
+      117 +        "learning_rate": 3e-4,                                
+      118 +        "scheduler":     "cosine",                            
+      119 +        "warmup_steps":  1000,                                
+      120 +        "fp16":          true                                 
+      121 +    }                                                         
+      122 +}                                                             
+      123 +```                                                           
+      124 +                                                              
+      125 +---                                                           
+      126 +                                                              
+      127 +### 5. Training and evaluation                                
+      128 +                                                              
+      129 +```bash                                                       
+      130 +# Train from scratch                                          
+      131 +python train.py --config configs/text/transformer_base.json   
+      132 +                                                              
+      133 +# Resume from a checkpoint                                    
+      134 +python train.py --config configs/text/transformer_base.json --
+          +resume outputs/transformer-base/checkpoint-epoch-0005         
+      135 +                                                              
+      136 +# Evaluate a checkpoint on the test split                     
+      137 +python evaluate.py --checkpoint outputs/transformer-base/check
+          +point-epoch-0020                                              
+      138 +```                                                           
+      139 +                                                              
+      140 +`train.py` automatically saves the experiment config to `outpu
+          +t_dir/experiment_config.json`, so `evaluate.py` can find it wi
+          +thout extra flags.                                            
+      141 +                                                              
+      142 +---                                                           
+      143 +                                                              
+      144 +### 6. Custom eval metrics — override `compute_metrics()`     
+      145 +                                                              
+      146 +`BaseTrainer.evaluate()` always returns `eval_loss`. Add domai
+          +n-specific metrics by subclassing:                            
+      147 +                                                              
+      148 +```python                                                     
+      149 +from trainer import BaseTrainer                               
+      150 +                                                              
+      151 +class AudioTrainer(BaseTrainer):                              
+      152 +    def compute_metrics(self, outputs: list[dict]) -> dict[str
+          +, float]:                                                     
+      153 +        hypotheses = [o["hypothesis"] for o in outputs]       
+      154 +        references = [o["reference"] for o in outputs]        
+      155 +        return {"wer": compute_wer(hypotheses, references)}   
+      156 +```                                                           
+      157 +                                                              
+      158 +Then pass `AudioTrainer` instead of `BaseTrainer` in your trai
+          +ning script.                                                  
+      159 +                                                              
+      160 +---                                                           
+      161 +                                                              
+      162 +## Project Structure                                          
+      163 +                                                              
+      164 +```                                                           
+      165 +e2e_pytorch/                                                  
+      166 +├── common/          # BaseConfig, BaseModel, Registry, shared
+          + layers                                                       
+      167 +├── audio/           # AudioDataset, feature extraction, Confo
+          +rmer, WER metric                                              
+      168 +├── text/            # TextDataset, tokenizer, Transformer/BER
+          +T, BLEU metric                                                
+      169 +├── trainer/         # BaseTrainer, TrainingArguments, optimiz
+          +er/scheduler factories                                        
+      170 +├── train.py         # CLI: config → model + data → train     
+      171 +├── evaluate.py      # CLI: checkpoint → eval metrics         
+      172 +└── configs/         # Experiment JSON configs per domain/mode
+          +l                                                             
+      173 +```                                                           
+      174 +                                                              
+      175 +---                                                           
+      176 +                                                              
+      177 +## Design Principles                                          
+      178 +                                                              
+      179 +- **Config-first** — every tuneable parameter lives in a `Base
+          +Config` subclass.                                             
+      180 +- **Registry pattern** — new models, datasets, and trainers pl
+          +ug in without modifying existing code.                        
+      181 +- **Pure PyTorch** — the full forward pass, training loop, and
+          + backward pass are readable with no hidden abstractions.      
+      182 +- **Separation of concerns** — model, data pipeline, trainer, 
+          +and evaluation are independent and swappable.                 
+
+● README.md updated with six concrete wiring patterns:
+
+  1. Config — typed dataclass, serialization to/from JSON
+  2. Registry — decorator registration, string-based lookup and build
+  3. Dataset — same registration pattern as models
+  4. Experiment config — the JSON file that ties model + dataset + training args
+   together
+  5. Train/eval CLI — the exact commands with --resume and --checkpoint flags
+  6. Custom metrics — how to subclass BaseTrainer to add WER, BLEU, etc.
+
+  Each section has a working code snippet so a new contributor can follow the
+  pattern immediately.
+
+✻ Cooked for 29s
+
+❯ please check and update the spec.md file... I bymistake overwrote it          
+
+● No problem — I'll restore the expanded version.
+
+● Write(spec.md)
+  ⎿  Added 85 lines, removed 8 lines
+        1  # spec.md — e2e_pytorch Project Specification
+        2 -This is basic e2e pytorch implementation of deep learning proj
+          -ects from speech, text etc domains. All the implementation sho
+          -uld be in pure pytorch and the classes etc should have modular
+          - structure                                                    
+        2 +                                                              
+        3 +This is a pure PyTorch end-to-end implementation of deep learn
+          +ing projects across domains (speech, text, etc.). All implemen
+          +tation is in pure PyTorch with a modular, reusable class struc
+          +ture.                                                         
+        4 +                                                              
+        5  ## Goal
+        4 -There will multiple directories for audio, text etc domain. In
+          - each directory there should be classes to handle dataloading,
+          - processing, datasets, model classes, evaluation metric relate
+          -d classes.                                                    
+        5 -For the complete project there should be universal train, test
+          -, eval related python scripts / files.                        
+        6  
+        7 +Build a clean, educational deep learning framework where:     
+        8 +- Each domain (audio, text, ...) has its own self-contained di
+          +rectory with data loading, processing, datasets, model classes
+          +, and evaluation metrics.                                     
+        9 +- A universal set of training, evaluation, and inference scrip
+          +ts works across all domains via a shared config and registry s
+          +ystem.                                                        
+       10 +- Learners can trace the full forward pass of complex architec
+          +tures without framework magic hiding the details.             
+       11  
+       12  ## Target Users
+        9 -those who want to learn and understand complex architectures f
+          -rom basics                                                    
+       13  
+       11 -## Core Features                                              
+       12 -The common classes / layers like Linear, dropout, attention, e
+          -tc should be reused                                           
+       14 +Those who want to learn and understand complex architectures (
+          +Transformers, Conformers, etc.) from first principles — withou
+          +t relying on high-level abstractions that hide what's happenin
+          +g.                                                            
+       15  
+       14 -## Out of Scope                                               
+       16 +## Directory Structure                                        
+       17  
+       18 +```                                                           
+       19 +e2e_pytorch/                                                  
+       20 +├── common/                      # Shared building blocks     
+       21 +│   ├── layers/                  # Reusable nn.Module primitiv
+          +es                                                            
+       22 +│   │   ├── attention.py         # MultiHeadAttention, SelfAtt
+          +ention, CrossAttention                                        
+       23 +│   │   ├── feedforward.py       # FFN, GLU variants          
+       24 +│   │   ├── normalization.py     # LayerNorm, RMSNorm, BatchNo
+          +rm                                                            
+       25 +│   │   ├── positional.py        # Sinusoidal, RoPE, ALiBi emb
+          +eddings                                                       
+       26 +│   │   └── dropout.py           # DropPath, StochasticDepth  
+       27 +│   ├── config.py                # BaseConfig dataclass       
+       28 +│   ├── model.py                 # BaseModel (wraps nn.Module)
+       29 +│   └── registry.py              # Registry: maps name → class
+       30 +│                                                             
+       31 +├── audio/                       # Speech / audio domain      
+       32 +│   ├── data/                                                 
+       33 +│   │   ├── dataset.py           # AudioDataset               
+       34 +│   │   ├── collator.py          # AudioCollator              
+       35 +│   │   └── processor.py         # Feature extraction (MFCC, m
+          +el-spectrogram)                                               
+       36 +│   ├── models/                                               
+       37 +│   │   ├── conformer.py                                      
+       38 +│   │   └── wav2vec.py                                        
+       39 +│   └── metrics.py               # WER, CER                   
+       40 +│                                                             
+       41 +├── text/                        # NLP domain                 
+       42 +│   ├── data/                                                 
+       43 +│   │   ├── dataset.py           # TextDataset                
+       44 +│   │   ├── collator.py                                       
+       45 +│   │   └── tokenizer.py                                      
+       46 +│   ├── models/                                               
+       47 +│   │   ├── transformer.py                                    
+       48 +│   │   └── bert.py                                           
+       49 +│   └── metrics.py               # BLEU, ROUGE, accuracy      
+       50 +│                                                             
+       51 +├── trainer/                     # Universal training infrastr
+          +ucture                                                        
+       52 +│   ├── trainer.py               # BaseTrainer: loop, grad acc
+          +um, checkpointing                                             
+       53 +│   ├── optimizer.py             # Optimizer factory          
+       54 +│   └── scheduler.py             # LR scheduler factory       
+       55 +│                                                             
+       56 +├── train.py                     # Entry point: config → model
+          + + data → train                                               
+       57 +├── evaluate.py                  # Entry point: checkpoint → e
+          +val                                                           
+       58 +├── configs/                     # YAML/JSON configs per exper
+          +iment                                                         
+       59 +└── tests/                                                    
+       60 +```                                                           
+       61  
+       62 +## Core Features                                              
+       63 +                                                              
+       64 +- **`common/layers/`** — shared primitive pool (Attention, FFN
+          +, Norm, Positional encodings). Every domain model imports from
+          + here; no duplication across domains.                         
+       65 +- **`BaseConfig`** — serializable dataclass (supports `from_di
+          +ct`, `to_dict`, `from_json`). All hyperparameters live here, n
+          +ot scattered in `__init__` signatures.                        
+       66 +- **`BaseModel`** — thin `nn.Module` wrapper tied to a config;
+          + exposes `save_checkpoint` / `load_checkpoint`.               
+       67 +- **`Registry`** — maps string names to classes so any compone
+          +nt can be instantiated from a config file (`Registry.build("mo
+          +del", "conformer", config)`).                                 
+       68 +- **`BaseTrainer`** — domain-agnostic training loop with gradi
+          +ent accumulation, logging, and checkpointing.                 
+       69 +- **Domain dirs** (`audio/`, `text/`) are self-contained and d
+          +epend only on `common/`.                                      
+       70 +- **`train.py` / `evaluate.py`** are domain-agnostic entry poi
+          +nts — they resolve the right classes via the registry and a co
+          +nfig file.                                                    
+       71 +                                                              
+       72  ## Key Design Decisions
+       18 -modular, reusable structure using all concepts of python      
+       73  
+       74 +- **Config-first**: every tuneable component accepts a config 
+          +object, not raw kwargs.                                       
+       75 +- **Registry pattern**: concrete subclasses register themselve
+          +s so the framework can build them by name from a config.      
+       76 +- **No hidden defaults**: all defaults live in the config data
+          +class, never in method signatures.                            
+       77 +- **Pure PyTorch**: no Lightning, no HuggingFace Trainer — the
+          + full training loop is visible and readable.                  
+       78 +- **Separation of concerns**: model, trainer, data pipeline, a
+          +nd evaluation are independent and swappable.                  
+       79 +- Python concepts in use: dataclasses, abstract base classes, 
+          +decorators (for registry), `__init_subclass__`, type hints thr
+          +oughout.                                                      
+       80 +                                                              
+       81 +## Out of Scope                                               
+       82 +                                                              
+       83 +- Multi-modal models (cross-domain fusion)                    
+       84 +- Distributed / multi-GPU training (can be added later)       
+       85 +- Deployment / serving infrastructure                         
+       86 +                                                              
+       87  ## Milestones / Phases
+       88  
+       89 +1. `common/` — BaseConfig, BaseModel, Registry, all shared lay
+          +ers                                                           
+       90 +2. `trainer/` — BaseTrainer, optimizer/scheduler factories    
+       91 +3. `text/` domain — Transformer, dataset, metrics             
+       92 +4. `audio/` domain — Conformer, feature extraction, WER metric
+       93 +5. End-to-end `train.py` / `evaluate.py` wiring               
+       94 +6. Example configs and a working training run per domain      
+       95  
+       96  ## Open Questions
+       97  
+       98 +- YAML vs Python dataclass configs as the primary interface?  
+       99 +- Should `configs/` live inside each domain dir or stay top-le
+          +vel?                                                          
+      100 +- Which audio datasets to support first (LibriSpeech, LJSpeech
+          +)?                                                            
+      101 +- Which text tasks to support first (language modeling, classi
+          +fication, seq2seq)?                                           
+
+● spec.md is restored to the full expanded version with all sections — directory
+   structure, core features, design decisions, milestones, and open questions.
+
+  Going forward, you can commit the files so you have a safe snapshot to roll
+  back to if something gets overwritten again. Want me to commit everything now?
+
+✻ Cooked for 26s
+
+❯ In Models can you write code for basic seq2 seq architecture for transformers 
+   for text domain and conformer architecture for speech domain.. Also decide   
+  on main API's to be supported by each model class, like                       
+
+● Let me plan all files before writing — common layers first (shared by both
+  models), then each model.
+
+  Files to create:
+  - common/layers/__init__.py, attention.py, feedforward.py, positional.py,
+  normalization.py
+  - text/__init__.py, text/models/__init__.py, text/models/transformer.py
+  - audio/__init__.py, audio/models/__init__.py, audio/models/conformer.py
+
+● Write(common\layers\__init__.py)
+  ⎿  Wrote 4 lines to common\layers\__init__.py
+      1 from .attention import MultiHeadAttention
+      2 from .feedforward import FeedForward
+      3 from .positional import SinusoidalPositionalEncoding
+      4 from .normalization import RMSNorm
+
+● Write(common\layers\attention.py)
+  ⎿  Wrote 73 lines to common\layers\attention.py
+       1 from __future__ import annotations
+       2 
+       3 import math
+       4 
+       5 import torch
+       6 import torch.nn as nn
+       7 import torch.nn.functional as F
+       8 
+       9 
+      10 class MultiHeadAttention(nn.Module):
+     … +76 lines (ctrl+o to expand)
+
+● Write(common\layers\feedforward.py)
+  ⎿  Wrote 41 lines to common\layers\feedforward.py
+       1 from __future__ import annotations
+       2 
+       3 import torch
+       4 import torch.nn as nn
+       5 
+       6 _ACTIVATIONS = {
+       7     "relu":  nn.ReLU,
+       8     "gelu":  nn.GELU,
+       9     "swish": nn.SiLU,   # SiLU == Swish
+      10     "silu":  nn.SiLU,
+     … +33 lines (ctrl+o to expand)
+
+● Write(common\layers\positional.py)
+  ⎿  Wrote 48 lines to common\layers\positional.py
+       1 from __future__ import annotations
+       2 
+       3 import math
+       4 
+       5 import torch
+       6 import torch.nn as nn
+       7 
+       8 
+       9 class SinusoidalPositionalEncoding(nn.Module):
+      10     """
+     … +43 lines (ctrl+o to expand)
+
+● Write(common\layers\normalization.py)
+  ⎿  Wrote 21 lines to common\layers\normalization.py
+       2 from __future__ import annotations
+       3 import torch
+       4 import torch.nn as nn
+       5 
+       6 
+       8     """MSNorm(nn.Module):
+       9     Root Mean Square Layer Normalization (Zhang & Sennrich, 2019
+         ).
+      10     Simpler than LayerNorm — no mean subtraction, only RMS resca
+         ling.
+     … +13 lines (ctrl+o to expand)
+
+● Now the Seq2Seq Transformer:
+
+● Bash(mkdir -p "D:\IISc\gitrepos\e2e_pytorch\text\models"
+      "D:\IISc\gitrepos\e2e_pytorch\audio\models")
+  ⎿  Done
+
+● Write(text\__init__.py)
+  ⎿  Wrote 1 lines to text\__init__.py
+      1 (No content)
+
+● Write(text\models\__init__.py)
+  ⎿  Wrote 1 lines to text\models\__init__.py
+      1 from .transformer import Seq2SeqTransformer, TransformerConfig
+
+● Write(text\models\transformer.py)
+  ⎿  Wrote 274 lines to text\models\transformer.py
+       2 Seq2Seq Transformer for text (machine translation, summarisation
+         , etc.)
+       3 
+       4 Architecture:
+       5     Embedding + SinusoidalPE
+       7     → M × DecoderLayer  (masked self-attn + cross-attn + FFN, pr
+         e-norm)
+       8     → Linear projection → vocab logits
+       9 
+      10 Registered as: Registry("model", "seq2seq_transformer")
+     … +304 lines (ctrl+o to expand)
+
+● Now the Conformer:
+
+● Write(audio\__init__.py)
+  ⎿  Wrote 1 lines to audio\__init__.py
+      1 (No content)
+
+● Write(audio\models\__init__.py)
+  ⎿  Wrote 1 lines to audio\models\__init__.py
+      1 from .conformer import ConformerModel, ConformerConfig
+
+● Write(audio\models\conformer.py)
+  ⎿  Wrote 266 lines to audio\models\conformer.py
+       2 Conformer encoder for speech recognition (Gulati et al., 2020).
+       3 
+       4 Architecture — each Conformer block:
+       5     x  →  ½ FFN  →  MHSA  →  Convolution  →  ½ FFN  →  LayerNorm
+           →  output
+       6 
+       7 Full model:
+       8     Linear input projection
+       9     → N × ConformerBlock
+      10     → CTC linear head  →  log-softmax  →  CTC loss
+     … +299 lines (ctrl+o to expand)
+● All files written. Here's a summary of everything:
+
+  ---
+  Common layers (common/layers/)
+
+  ┌──────────────────┬───────────────────────────────────────────────────────┐
+  │       File       │                     What's in it                      │
+  ├──────────────────┼───────────────────────────────────────────────────────┤
+  │ attention.py     │ MultiHeadAttention — scaled dot-product, supports     │
+  │                  │ self- and cross-attention, additive + padding masks   │
+  ├──────────────────┼───────────────────────────────────────────────────────┤
+  │ feedforward.py   │ FeedForward — 2-layer MLP, configurable activation:   │
+  │                  │ relu, gelu, swish/silu                                │
+  ├──────────────────┼───────────────────────────────────────────────────────┤
+  │ positional.py    │ SinusoidalPositionalEncoding,                         │
+  │                  │ LearnedPositionalEmbedding                            │
+  ├──────────────────┼───────────────────────────────────────────────────────┤
+  │ normalization.py │ RMSNorm — simpler than LayerNorm, used in             │
+  │                  │ LLaMA/T5-style models                                 │
+  └──────────────────┴───────────────────────────────────────────────────────┘
+
+  ---
+  Seq2Seq Transformer (text/models/transformer.py)
+
+  ┌──────────────────────┬─────────────────┬───────────────────────────────┐
+  │         API          │    Signature    │          When to use          │
+  ├──────────────────────┼─────────────────┼───────────────────────────────┤
+  │ forward(batch)       │ → {loss,        │ training (teacher-forced)     │
+  │                      │ logits}         │                               │
+  ├──────────────────────┼─────────────────┼───────────────────────────────┤
+  │ encode(src, mask)    │ → memory        │ encoder-only pass             │
+  │                      │ (B,S,d)         │                               │
+  ├──────────────────────┼─────────────────┼───────────────────────────────┤
+  │ decode(tgt, memory,  │ → logits        │ one decoder pass              │
+  │ …)                   │ (B,T,V)         │                               │
+  ├──────────────────────┼─────────────────┼───────────────────────────────┤
+  │ generate(src, …)     │ → token_ids     │ greedy autoregressive         │
+  │                      │ (B,T)           │ inference                     │
+  └──────────────────────┴─────────────────┴───────────────────────────────┘
+
+  ---
+  Conformer (audio/models/conformer.py)
+
+  ┌────────────────────────────┬──────────────────────┬─────────────────────┐
+  │            API             │      Signature       │     When to use     │
+  ├────────────────────────────┼──────────────────────┼─────────────────────┤
+  │ forward(batch)             │ → {loss, log_probs,  │ training with CTC   │
+  │                            │ output_lengths}      │ loss                │
+  ├────────────────────────────┼──────────────────────┼─────────────────────┤
+  │ encode(features, lengths)  │ → (encoded,          │ acoustic encoder    │
+  │                            │ output_lengths)      │ pass                │
+  ├────────────────────────────┼──────────────────────┼─────────────────────┤
+  │ greedy_decode(log_probs,   │                      │ CTC collapse        │
+  │ lengths)                   │ → list[list[int]]    │ (repeat+blank       │
+  │                            │                      │ removal)            │
+  ├────────────────────────────┼──────────────────────┼─────────────────────┤
+  │ generate(features,         │ → list[list[int]]    │ full encode →       │
+  │ lengths)                   │                      │ decode pipeline     │
+  └────────────────────────────┴──────────────────────┴─────────────────────┘
+
+  ---
+  Both models inherit save_checkpoint, load_checkpoint, and num_parameters from
+  BaseModel, and register themselves in the Registry so train.py/evaluate.py can
+   instantiate them purely from a config JSON.
+
+✻ Cogitated for 3m 30s
+
+※ recap: Building an e2e PyTorch deep learning framework similar to HuggingFace Transformers. Core infrastructure (trainer, registry, configs) and two models (Seq2Seq Transformer, Conformer) are written. Next: commit all files. (disable recaps in /config)
+
+❯ commit this                                                                   
+
+● Bash(git status && git log --oneline -3)
+  ⎿  On branch master
+     Your branch is up to date with 'origin/master'.
+     … +19 lines (ctrl+o to expand)
+
+● Bash(git add README.md CLAUDE.md spec.md train.py evaluate.py audio/ common/
+      text/ trainer/ && git commit -m "$(cat <<'EOF'
+      Add project scaffold, trainer infrastruct…)
+  ⎿  [master 8a49227] Add project scaffold, trainer infrastructure, and mod
+     el implementations
+      25 files changed, 1688 insertions(+), 1 deletion(-)
+     … +18 lines (ctrl+o to expand)
+
+● Committed — 25 files, 1688 lines added in a single clean commit (8a49227).
+
+✻ Cooked for 15s
+
+❯ now write the dataset and dataloader classes for both domains and then commit 
+   and push the changes to git                                                  
+
+● Let me plan the files before writing:
+
+  - common/dataset.py — BaseDataset with collate_fn hook (used by trainer)
+  - text/data/ — tokenizer.py, dataset.py, collator.py
+  - audio/data/ — processor.py, dataset.py, collator.py
+  - Update trainer/trainer.py — wire collate_fn from dataset into DataLoader
+  - Update common/__init__.py — export BaseDataset
+
+● Write(common\dataset.py)
+  ⎿  Wrote 19 lines to common\dataset.py
+       1 from __future__ import annotations
+       2 
+       3 from abc import ABC
+       4 from typing import Callable
+       5 
+       6 from torch.utils.data import Dataset
+       7 
+       8 
+       9 class BaseDataset(Dataset, ABC):
+      10     """
+     … +10 lines (ctrl+o to expand)
+
+● Update(common\__init__.py)
+  ⎿  Added 1 line
+      1  from .config import BaseConfig
+      2 +from .dataset import BaseDataset                                
+      3  from .model import BaseModel
+      4  from .registry import Registry
+
+● Now update _make_loader in the trainer to pass collate_fn:
+
+  Searched for 1 pattern, read 1 file (ctrl+o to expand)
+
+● Update(trainer\trainer.py)
+  ⎿  Added 2 lines
+      165          logger.info(f"Checkpoint saved → {path}")
+      166  
+      167      def _make_loader(self, dataset: Dataset, batch_size: int, 
+           shuffle: bool) -> DataLoader:
+      168 +        collate_fn = getattr(dataset, "collate_fn", None)     
+      169          return DataLoader(
+      170              dataset,
+      171              batch_size=batch_size,
+      172              shuffle=shuffle,
+      173              num_workers=self.args.num_workers,
+      174              pin_memory=(self.device.type == "cuda"),
+      175 +            collate_fn=collate_fn,                            
+      176          )
+      177  
+      178      def _to_device(self, batch):
+
+● Now the text domain data classes:
+
+● Bash(mkdir -p "D:\IISc\gitrepos\e2e_pytorch\text\data"
+      "D:\IISc\gitrepos\e2e_pytorch\audio\data")
+  ⎿  Done
+
+● Write(text\data\tokenizer.py)
+  ⎿  Wrote 86 lines to text\data\tokenizer.py
+       2 Character-level tokenizer.
+       3 
+       4 Intentionally simple — every character is a token, vocab is buil
+       5 Good for learning because the encoding is fully transparent and 
+         requires no
+       6 external library. Swap for a BPE tokenizer once the architecture
+       7  is understood.
+       8 Special tokens always occupy fixed ids:
+       9     0 → <pad>   1 → <bos>   2 → <eos>   3 → <unk>
+      10 """
+     … +87 lines (ctrl+o to expand)
+
+● Write(text\data\collator.py)
+  ⎿  Wrote 47 lines to text\data\collator.py
+       2 from __future__ import annotations
+       3 import torch
+       4 
+       5 
+       6 class Seq2SeqCollator:
+       8     Pads a batch of variable-length source/target pairs to the l
+         ongest sequence
+       9     in each batch. Called automatically by DataLoader when retur
+         ned from
+      10     Seq2SeqDataset.collate_fn.
+     … +49 lines (ctrl+o to expand)
+
+● Write(text\data\dataset.py)
+  ⎿  Wrote 118 lines to text\data\dataset.py
+       2 Text seq2seq dataset.
+       3 
+       4 Supported file formats
+       5 ──────────────────────
+       6 TSV  (default)  one pair per line:  source<TAB>target
+       7 JSON            list of objects:    [{"src": "...", "tgt": "..."
+         }, ...]
+       8 
+       9 Directory layout expected by the split resolver:
+      10     <data_path>/train.tsv   (or .json)
+     … +121 lines (ctrl+o to expand)
+
+● Write(text\data\__init__.py)
+  ⎿  Wrote 3 lines to text\data\__init__.py
+      1 from .tokenizer import CharTokenizer
+      2 from .dataset import Seq2SeqDataset
+      3 from .collator import Seq2SeqCollator
+
+● Now the audio domain:
+
+● Write(audio\data\processor.py)
+  ⎿  Wrote 89 lines to audio\data\processor.py
+       2 Acoustic feature extraction: raw waveform → log mel filterbanks.
+       3 
+       4 LogMelExtractor is the default processor. It wraps torchaudio.tr
+         ansforms
+       5 and handles resampling, mono conversion, log compression, and pe
+       6 normalisation in one callable.
+       7 
+       8 Output shape: (T_frames, n_mels)
+       9     T_frames ≈ ceil(num_samples / hop_length)
+      10 """
+     … +91 lines (ctrl+o to expand)
+
+● Write(audio\data\collator.py)
+  ⎿  Wrote 46 lines to audio\data\collator.py
+       2 from __future__ import annotations
+       3 import torch
+       4 
+       5 
+       6 class AudioCollator:
+       8     Pads variable-length audio feature sequences and label seque
+         nces to the
+       9     longest example in the batch. Called automatically by DataLo
+         ader when
+      10     returned from AudioDataset.collate_fn.
+     … +40 lines (ctrl+o to expand)
+
+● Write(audio\data\dataset.py)
+  ⎿  Wrote 120 lines to audio\data\dataset.py
+       2 Audio dataset for ASR / speech tasks.
+       3 
+       4 Manifest format
+       5 ───────────────
+       6 CSV  (default)   header row required:  audio_path,transcript
+       7 JSON             list of objects:      [{"audio_path": "...", "t
+         ranscript": "..."}, ...]
+       8 
+       9 Directory layout:
+      10     <data_path>/train.csv   (or .json)
+     … +126 lines (ctrl+o to expand)
+● Write(audio\data\__init__.py)
+  ⎿  Wrote 3 lines to audio\data\__init__.py
+      1 from .processor import LogMelExtractor, LogMelConfig
+      2 from .dataset import AudioDataset
+      3 from .collator import AudioCollator
+
+● Now commit and push:
+
+● Bash(git status)
+  ⎿  On branch master
+     Your branch is ahead of 'origin/master' by 1 commit.
+       (use "git push" to publish your local commits)
+     … +15 lines (ctrl+o to expand)
+
+● Bash(git add common/__init__.py common/dataset.py trainer/trainer.py
+      audio/data/ text/data/ && git commit -m "$(cat <<'EOF'
+      Add dataset and dataloader classes for te…)
+  ⎿  [master 9ecde40] Add dataset and dataloader classes for text and audio
+      domains
+      11 files changed, 534 insertions(+)
+     … +9 lines (ctrl+o to expand)
+
+● Bash(git push origin master)
+  ⎿  To github.com:pranamyapatil/e2e_pytorch.git
+        842f49e..9ecde40  master -> master
+
+● Committed and pushed. Here's what was added:
+
+  ---
+  Text domain (text/data/)
+
+  ┌──────────────┬───────────────────────────────────────────────────────────┐
+  │     File     │                       What it does                        │
+  ├──────────────┼───────────────────────────────────────────────────────────┤
+  │ tokenizer.py │ CharTokenizer — build vocab from raw text, encode/decode, │
+  │              │  save/load JSON                                           │
+  ├──────────────┼───────────────────────────────────────────────────────────┤
+  │ dataset.py   │ Seq2SeqDataset — loads TSV/JSON pairs, splits into        │
+  │              │ decoder_input_ids + labels                                │
+  ├──────────────┼───────────────────────────────────────────────────────────┤
+  │ collator.py  │ Seq2SeqCollator — dynamic padding; labels padded with     │
+  │              │ -100 (cross-entropy ignores it)                           │
+  └──────────────┴───────────────────────────────────────────────────────────┘
+
+  Audio domain (audio/data/)
+
+  ┌──────────────┬───────────────────────────────────────────────────────────┐
+  │     File     │                       What it does                        │
+  ├──────────────┼───────────────────────────────────────────────────────────┤
+  │ processor.py │ LogMelExtractor — resample → mono → MelSpectrogram → log  │
+  │              │ → per-utterance normalize                                 │
+  ├──────────────┼───────────────────────────────────────────────────────────┤
+  │ dataset.py   │ AudioDataset — loads CSV/JSON manifest, extracts features │
+  │              │  on-the-fly, clips to max_duration_s                      │
+  ├──────────────┼───────────────────────────────────────────────────────────┤
+  │ collator.py  │ AudioCollator — pads (B, T_max, n_mels) features and (B,  │
+  │              │ L_max) labels                                             │
+  └──────────────┴───────────────────────────────────────────────────────────┘
+
+  Trainer wiring
+
+  BaseTrainer._make_loader now reads dataset.collate_fn automatically — no
+  manual plumbing needed when adding a new domain dataset.
+
+✻ Worked for 3m 42s
