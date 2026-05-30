@@ -27,9 +27,9 @@ class BPETokenizer(BaseTokenizer):
                     pair_word_indx_mapping_dict[(ch1,ch2)].append((ii,jj))   # defaultdict triggers factory on []
 
            
-        sorted_cnt = OrderedDict(sorted(pair_freq_cnt_dict.items(), key = lambda x : x[1], reverse=True))
-        # we have sorted list and now also prepare for next after removal
-        most_frequent_pair,_ = next(iter(sorted_cnt.items()), (None,None))
+        most_frequent_pair = max(pair_freq_cnt_dict, key=pair_freq_cnt_dict.get, default=None)
+        if most_frequent_pair is not None and pair_freq_cnt_dict[most_frequent_pair] <= 0:
+            most_frequent_pair = None
         #  from pair_word_indx mapping get which all words it is present and adjust accordingly
         if most_frequent_pair is not None:
             pair_freq_cnt_dict[most_frequent_pair] = 0
