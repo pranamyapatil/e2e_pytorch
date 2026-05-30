@@ -186,14 +186,7 @@ class BPETokenizer(BaseTokenizer):
             token_ids.append(self.vocab[f"{p}"])
         return token_ids
 
-    def decode(self, token_ids_list=[]):
-        tokens = []
-        for t in token_ids_list:
-            tokens.append(self.inverse_vocab[t])
-        raw = "".join(tokens)
-        decoded = bytes([ord(c) for c in raw]).decode("utf-8")
-        print(f"The decoded tokens are {decoded!r}")
-        return decoded
+
 
 
 

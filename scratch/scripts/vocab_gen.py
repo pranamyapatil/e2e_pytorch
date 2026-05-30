@@ -34,12 +34,12 @@ def main(cfg):
 
     # --- Encode dry run ---
     print("\nEncode dry run:")
-    print(f"  {'input':<14}  {'token ids':<34}  decoded")
+    print(f"  {'input':<14}  {'token ids':<34}  tokens")
     print(f"  {'-'*14}  {'-'*34}  {'-'*24}")
     for s in cfg.samples:
-        ids     = tokenizer.encode(s)
-        decoded = tokenizer.decode(ids)
-        print(f"  {repr(s):<14}  {str(ids):<34}  {repr(decoded)}")
+        ids    = tokenizer.encode(s)
+        tokens = [tokenizer.inverse_vocab[i] for i in ids]
+        print(f"  {repr(s):<14}  {str(ids):<34}  {tokens}")
 
     # --- Save ---
     print(f"\nSaving vocab -> {cfg.vocab_dir}")
@@ -49,9 +49,9 @@ def main(cfg):
     print("Reloading and re-encoding first two samples:")
     tokenizer2 = TokenizerClass.load_vocab(cfg.vocab_dir)
     for s in list(cfg.samples)[:2]:
-        ids     = tokenizer2.encode(s)
-        decoded = tokenizer2.decode(ids)
-        print(f"  {repr(s):<14}  {str(ids):<34}  {repr(decoded)}")
+        ids    = tokenizer2.encode(s)
+        tokens = [tokenizer2.inverse_vocab[i] for i in ids]
+        print(f"  {repr(s):<14}  {str(ids):<34}  {tokens}")
 
 
 if __name__ == "__main__":
