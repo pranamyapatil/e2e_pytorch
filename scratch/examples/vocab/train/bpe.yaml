@@ -1,0 +1,13 @@
+vocab_builder:
+  _target_: src.vocab.bpe.BPETokenizer
+  vocab_size: 280
+  file_path: scripts/sample.txt
+
+vocab_dir: scripts/vocab_out
+
+samples:
+  - low
+  - lower
+  - newest
+  - fast
+  - wide
